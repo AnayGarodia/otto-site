@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Otto — your Mac, on autopilot</title>
+<meta name="description" content="Otto is a desktop agent that uses your Mac for you. Download for macOS." />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+<style>
+  :root {
+    --ink: #14110d;
+    --paper: #f3ede1;
+    --accent: #0f6b5c;
+    --muted: #6b6357;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-font-smoothing: antialiased; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 16px/1.6 ui-serif, "Iowan Old Style", Georgia, serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 24px; width: 100%; }
+  header { padding: 28px 0; }
+  .mark { font-weight: 600; letter-spacing: -0.02em; font-size: 20px; }
+  .mark span { color: var(--accent); }
+  main { flex: 1; display: flex; align-items: center; padding: 64px 0; }
+  h1 {
+    font-size: clamp(40px, 8vw, 72px);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+  h1 em { color: var(--accent); font-style: normal; }
+  .lede { font-size: clamp(18px, 2.6vw, 22px); color: var(--muted); max-width: 30ch; margin-bottom: 40px; }
+  .cta { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .download {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: var(--paper);
+    text-decoration: none; font-family: system-ui, sans-serif; font-weight: 600;
+    padding: 14px 24px; border-radius: 12px; font-size: 16px;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .download:hover { transform: translateY(-1px); background: var(--accent); }
+  .req { font-family: system-ui, sans-serif; font-size: 13px; color: var(--muted); }
+  footer { padding: 32px 0; font-family: system-ui, sans-serif; font-size: 13px; color: var(--muted); }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header><div class="mark">Otto<span>.</span></div></header>
+    <main>
+      <div>
+        <h1>Your Mac,<br /><em>on autopilot.</em></h1>
+        <p class="lede">Otto sees your screen and does the work — clicking, typing, and finishing tasks for you.</p>
+        <div class="cta">
+          <a class="download" id="dl" href="https://otto-api.duckdns.org/otto/Otto-latest.dmg" download>
+            ↓ Download for macOS
+          </a>
+          <span class="req">macOS 14+ · Apple Silicon &amp; Intel · <span id="ver"></span></span>
+        </div>
+      </div>
+    </main>
+    <footer>© Otto · <a href="https://otto-api.duckdns.org/health">status</a></footer>
+  </div>
+  <script>
+    // Show the live version pulled from the Sparkle appcast (best-effort).
+    fetch("https://otto-api.duckdns.org/otto/appcast.xml")
+      .then(r => r.text())
+      .then(t => {
+        const m = t.match(/sparkle:shortVersionString="([^"]+)"/) || t.match(/<title>v?([0-9][^<]*)<\/title>/);
+        if (m) document.getElementById("ver").textContent = "v" + m[1].replace(/^v/, "");
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
