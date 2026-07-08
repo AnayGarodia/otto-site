@@ -138,7 +138,7 @@
   <script>
     addEventListener("scroll",()=>document.getElementById("nav").classList.toggle("scrolled",scrollY>8));
     fetch("https://otto-api.duckdns.org/otto/appcast.xml").then(r=>r.text()).then(t=>{
-      const m=t.match(/sparkle:shortVersionString="([^"]+)"/)||t.match(/<title>v?([0-9][^<]*)<\/title>/);
+      const m=t.match(/<sparkle:shortVersionString>v?([0-9][^<]*)<\/sparkle:shortVersionString>/)||t.match(/sparkle:shortVersionString="([^"]+)"/)||t.match(/<title>v?([0-9][^<]*)<\/title>/);
       if(m){const v="v"+m[1].replace(/^v/,"");document.getElementById("ver").textContent=v;document.getElementById("ver2").textContent=v;}
     }).catch(()=>{});
   </script>
