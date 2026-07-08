@@ -140,9 +140,11 @@
     fetch("https://otto-api.duckdns.org/otto/appcast.xml").then(r=>r.text()).then(t=>{
       const m=t.match(/<sparkle:shortVersionString>v?([0-9][^<]*)<\/sparkle:shortVersionString>/)||t.match(/sparkle:shortVersionString="([^"]+)"/)||t.match(/<title>v?([0-9][^<]*)<\/title>/);
       if(m){const num=m[1].replace(/^v/,"");const v="v"+num;document.getElementById("ver").textContent=v;document.getElementById("ver2").textContent=v;
-        // Name the downloaded file otto_<version>.dmg so it's obvious which build you got
-        // (the URL stays the stable Otto-latest.dmg; only the saved filename carries the version).
-        document.querySelectorAll('a[href*="Otto-latest.dmg"]').forEach(a=>a.setAttribute("download","otto_"+num+".dmg"));}
+        // Point the download at the VERSIONED file the backend already serves (Otto-<version>.dmg),
+        // so the saved file carries the version (Otto-0.7.0.dmg) and you can see which build you got.
+        // The `download` attribute can't rename a cross-origin file, so the URL basename must carry it.
+        // Static href stays Otto-latest.dmg as a fallback if this fetch fails.
+        document.querySelectorAll('a[href*="Otto-latest.dmg"]').forEach(a=>a.setAttribute("href","https://otto-api.duckdns.org/otto/Otto-"+num+".dmg"));}
     }).catch(()=>{});
   </script>
 </body>
